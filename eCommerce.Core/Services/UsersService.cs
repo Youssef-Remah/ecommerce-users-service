@@ -1,4 +1,5 @@
-﻿using eCommerce.Core.DTOs;
+﻿using AutoMapper;
+using eCommerce.Core.DTOs;
 using eCommerce.Core.Entities;
 using eCommerce.Core.RepositoryInterfaces;
 using eCommerce.Core.ServiceInterfaces;
@@ -8,10 +9,12 @@ namespace eCommerce.Core.Services;
 internal class UsersService : IUsersService
 {
     private readonly IUsersRepository _usersRepository;
+    private readonly IMapper _mapper;
 
-    public UsersService(IUsersRepository usersRepository)
+    public UsersService(IUsersRepository usersRepository, IMapper mapper)
     {
         _usersRepository = usersRepository;
+        _mapper = mapper;
     }
 
     public async Task<AuthenticationResponse?> LoginAsync(LoginRequest request)
@@ -20,37 +23,17 @@ internal class UsersService : IUsersService
 
         if (user == null) return null;
 
-        return new AuthenticationResponse (
-            user.UserID,
-            user.Email,
-            user.Gender,
-            user.Name,
-            "token",
-            true
-        );
+        return _mapper.Map<AuthenticationResponse>(user) with { Success = true, Token = "token"};
     }
 
     public async Task<AuthenticationResponse?> RegisterAsync(RegisterRequest request)
     {
-        var user = new ApplicationUser
-        {
-            Email = request.Email,
-            Password = request.Password,
-            Name = request.Name,
-            Gender = request.Gender.ToString()
-        };
+        var user = _mapper.Map<ApplicationUser>(request);
 
         var registeredUser = await _usersRepository.AddUserAsync(user);
 
         if(registeredUser == null) return null;
 
-        return new AuthenticationResponse(
-            registeredUser.UserID,
-            registeredUser.Email,
-            registeredUser.Name,
-            registeredUser.Gender,
-            "token",
-            true
-        );
+        return _mapper.Map<AuthenticationResponse>(registeredUser) with { Success = true, Token = "token" };
     }
 }
