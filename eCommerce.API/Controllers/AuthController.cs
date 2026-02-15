@@ -9,7 +9,7 @@ namespace eCommerce.API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IUsersService _usersService;
-
+        
         public AuthController(IUsersService usersService)
         {
             _usersService = usersService;
