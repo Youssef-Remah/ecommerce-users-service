@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using eCommerce.Infrastructure.AppConfigurations;
+using Microsoft.Extensions.Options;
 using Npgsql;
 using System.Data;
 
@@ -6,19 +7,14 @@ namespace eCommerce.Infrastructure.DbContext;
 
 public class DapperDbContext
 {
-    private readonly IConfiguration _configuration;
-
     private readonly IDbConnection _dbConnection;
 
     public IDbConnection DbConnection => _dbConnection;
 
-    public DapperDbContext(IConfiguration configuration)
+    public DapperDbContext(IOptions<ConnectionStrings> options)
     {
-        _configuration = configuration;
-        string _connectionString = _configuration.GetConnectionString("PostgresConnection")!;
+        string _connectionString = options.Value.PostgresConnection;
 
         _dbConnection = new NpgsqlConnection(_connectionString);
     }
-
-
 }
