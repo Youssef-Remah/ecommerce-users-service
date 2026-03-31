@@ -35,7 +35,6 @@ public class ExceptionHandlingMiddleware
                                  Type = ex.GetType().ToString()
                              });
         }
-        
     }
 }
 
