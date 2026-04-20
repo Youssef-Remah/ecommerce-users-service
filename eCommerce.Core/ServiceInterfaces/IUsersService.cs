@@ -7,4 +7,6 @@ public interface IUsersService
     Task<AuthenticationResponse?> LoginAsync(LoginRequest request);
 
     Task<AuthenticationResponse?> RegisterAsync(RegisterRequest request);
+
+    Task<UserDto> GetUserById(Guid userId);
 }
