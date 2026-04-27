@@ -1,5 +1,4 @@
-﻿using eCommerce.Core.DTOs;
-using eCommerce.Core.ServiceInterfaces;
+﻿using eCommerce.Core.ServiceInterfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eCommerce.API.Controllers
